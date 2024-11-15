@@ -1,0 +1,3 @@
+# Requerimientos
+- streamlit
+- pandas
