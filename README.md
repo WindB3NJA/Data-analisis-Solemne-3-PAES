@@ -28,4 +28,4 @@ Este repositorio contiene el análisis de datos del conjunto de datos [inserte n
 ¡Las contribuciones son bienvenidas! Por favor, abre un issue o un pull request para contribuir.
 
 ## Licencia 📄
-Este proyecto está licenciado bajo la Licencia MIT.
+[no tiene XD]
