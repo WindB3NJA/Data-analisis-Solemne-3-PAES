@@ -7,11 +7,7 @@ url = 'https://datos.gob.cl/dataset/63e116db-0db9-4dc3-b1f4-e5cc51f7cff6/resourc
 st.set_page_config(
         page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
 
-with st.sidebar:
-        st.header("Bases de datos")
-        delimiter = st.text_input("Delimitador", value=";")
-
 st.title(f"Vista de datos")
 st.markdown("## Data frame")
-database = pd.read_csv(url, delimiter=delimiter)
+database = pd.read_csv(url, delimiter=",")
 st.write(database)
