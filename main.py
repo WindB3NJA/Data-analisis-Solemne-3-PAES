@@ -1,13 +1,27 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
+# Ruta al archivo XLS
+url = "https://datos.gob.cl/dataset/84d6e373-10af-41c9-a4d2-e80db6f94e01/resource/e72a5cc2-d0ec-4d8f-b092-637a513f2c5b/download/aeronaves-inscritas-en-el-r.n.a.-al-31.oct.2024-plataforma-del-gobierno.xlsx"
 
-url = 'https://datos.gob.cl/dataset/63e116db-0db9-4dc3-b1f4-e5cc51f7cff6/resource/9078be17-bb39-414d-bc56-0f8c0e994ce9/download/precio_consumidor_2021.zip'  
+# Leer el archivo XLS y convertirlo en un DataFrame, especificando que el encabezado está en la tercera fila
+database = pd.read_excel(url, header=2)
 
+# Configuración de la página de Streamlit
 st.set_page_config(
-        page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
+    page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
 
+# Título y descripción en Streamlit
 st.title(f"Vista de datos")
-st.markdown("## Data frame")
-database = pd.read_csv(url, delimiter=",")
+st.markdown("### Datos de AERONAVES INSCRITAS EN EL R.N.A ")
 st.write(database)
+
+# Graficar los datos
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.hist(database['TIPO DE AERONAVE'], bins=20, edgecolor='black')
+ax.set_xlabel('Tipo de Aeronave')
+ax.set_ylabel('Frecuencia')
+ax.set_title('Histograma de Tipos de Aeronaves')
+
+st.pyplot(fig)
