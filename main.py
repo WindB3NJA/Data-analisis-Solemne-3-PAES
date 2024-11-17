@@ -3,23 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st 
 
-# Codigo de Zamora (hace falta el grafico)
-url = 'https://datos.gob.cl/dataset/63e116db-0db9-4dc3-b1f4-e5cc51f7cff6/resource/9078be17-bb39-414d-bc56-0f8c0e994ce9/download/precio_consumidor_2021.zip'  
-
-st.set_page_config(
-        page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
-
-with st.sidebar:
-        st.header("Bases de datos")
-        delimiter = st.text_input("Delimitador", value=",")
-
-st.title(f"Vista de datos")
-st.markdown("## Data frame")
-database = pd.read_csv(url, delimiter=delimiter)
-st.write(database.iloc[1:11])
-
-
-# Codigo de Simon
 
 # Leer el archivo CSV usando la coma como separador
 datos = pd.read_csv('https://datos.gob.cl/dataset/da14f0de-e6b0-4ee4-8ae2-8c05782dd20b/resource/59fdc96c-62e9-48fe-ae10-1e9eeded81d8/download/ejecucion-presupuestaria_nivel-nacional_a-septiembre-2024.csv', delimiter=';')
@@ -27,8 +10,6 @@ datos = pd.read_csv('https://datos.gob.cl/dataset/da14f0de-e6b0-4ee4-8ae2-8c0578
 # Elimina los valores nulos
 datos.dropna(inplace=True)
 
-# Imprimir el DataFrame
-print(datos)
 
 # Convertir las columnas a valores numéricos
 datos['Ejecución de Septiembre'] = pd.to_numeric(datos['Ejecución de Septiembre'], errors='coerce')
@@ -37,8 +18,11 @@ datos['Ejecución a Septiembre'] = pd.to_numeric(datos['Ejecución a Septiembre'
 # Eliminar filas con valores NaN
 datos.dropna(subset=['Ejecución de Septiembre', 'Ejecución a Septiembre'], inplace=True)
 
+
+# Grafico 1: Bar Chart
+
 # Crear el gráfico de barras
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(10, 6))
 
 # Definir el ancho de las barras
 bar_width = 0.35
@@ -58,15 +42,49 @@ ax.set_xticks(index + bar_width / 2)
 ax.set_xticklabels(index)
 ax.legend()
 
+
+
+
+# Grafico 2: Line Chart
+
+# Limitar los datos a un índice máximo de 14 para el gráfico
+x = datos['Ejecución de Septiembre']
+y = datos['Ejecución a Septiembre']
+
+# plot
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+
+ax2.plot(range(len(x)), x, label='Ejecución de Septiembre')
+ax2.plot(range(len(y)), y, label='Ejecución a Septiembre')
+
+ax2.set_xlabel('Índice')
+ax2.set_ylabel('Valores')
+ax2.set_title('Ejecución de Septiembre vs Ejecución a Septiembre')
+ax2.legend()
+
+
+
 # Streamlit
 
-st.title("Ejecucion presupuestaria nivel nacional a _SEPTIEMBRE_")
-col1, col2 = st.columns([2, 3])
+st.title("Ejecución presupuestaria nivel nacional a _SEPTIEMBRE_")
 
-with col1:
-    st.write('Tabla de datos')
-    st.dataframe(datos, width=1000, height=400)
 
-with col2:
-    st.write('Graficos')
+st.subheader('Tabla de datos')
+st.dataframe(datos, width=1000, height=400)
+
+st.subheader('Graficos')
+
+option = st.selectbox(
+    "Cual grafico estas interesado en ver?",
+    ("Grafico de barras", "Grafico de lineas"),
+)
+
+
+if option == "Grafico de barras":
     st.pyplot(fig)
+else:
+    st.pyplot(fig2)
+
+st.write("Seleccionaste:", option)
+
+
