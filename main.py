@@ -1,17 +1,21 @@
-import streamlit as st
+import matplotlib.pyplot as plt
 import pandas as pd
+import streamlit as st
 
+# Data frame
+datos = pd.read_csv('https://datos.gob.cl/uploads/recursos/RecaudacionPagoDerechosInscripcion_2011-2012.csv', sep=';')
+datos.columns = ['Año', 'Mes', 'Recaudacion']
+datos['Fecha'] = pd.to_datetime(datos['Año'].astype(str) + datos['Mes'].astype(str), format='%Y%m')
 
-url = 'https://datos.gob.cl/dataset/63e116db-0db9-4dc3-b1f4-e5cc51f7cff6/resource/9078be17-bb39-414d-bc56-0f8c0e994ce9/download/precio_consumidor_2021.zip'  
+# Graficas de analisis
+plt.figure(figsize=(10,20))
+plt.plot(datos['Fecha'], datos['Recaudacion'], marker='o', linestyle='-', color='g')
+plt.xlabel('Año y mes')
+plt.ylabel('Recaudacion')
+plt.title('tiempo')
+plt.show()
 
-st.set_page_config(
-        page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
-
-with st.sidebar:
-        st.header("Bases de datos")
-        delimiter = st.text_input("Delimitador", value=";")
-
-st.title(f"Vista de datos")
-st.markdown("## Data frame")
-database = pd.read_csv(url, delimiter=delimiter)
-st.write(database)
+# Pagina 
+st.title("Gráfico de Recaudación por Mes y Año")
+st.dataframe(datos)
+st.pyplot(plt)
