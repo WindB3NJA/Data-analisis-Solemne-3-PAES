@@ -8,6 +8,7 @@ Este repositorio contiene el análisis de datos del conjunto de Puntajes PAES re
 - Librerías:
   - streamlit
   - pandas
+  - matplotlib
 
 ## Uso 🚀
 
