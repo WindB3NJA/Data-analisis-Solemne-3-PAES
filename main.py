@@ -5,7 +5,7 @@ import numpy as np
 
 # Ruta al archivo XLS
 url = "https://datos.gob.cl/dataset/84d6e373-10af-41c9-a4d2-e80db6f94e01/resource/e72a5cc2-d0ec-4d8f-b092-637a513f2c5b/download/aeronaves-inscritas-en-el-r.n.a.-al-31.oct.2024-plataforma-del-gobierno.xlsx"
-
+new_url = "https://datosabiertos.mineduc.cl/wp-content/uploads/2024/05/PAES-2024-Inscritos-Puntajes.rar"
 # Leer el archivo XLS y convertirlo en un DataFrame, especificando que el encabezado está en la tercera fila
 database = pd.read_excel(url, header=2)
 
