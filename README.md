@@ -1,6 +1,6 @@
 # Analisis de Datos 📊
 
-Este repositorio contiene el análisis de datos del conjunto de datos [inserte nombre del data frame] para la evaluación solemne 3.
+Este repositorio contiene el análisis de datos del conjunto de Puntajes PAES registrados en 2024, para la evaluación solemne 3.
 
 ## Requisitos 🛠️
 
@@ -26,6 +26,3 @@ Este repositorio contiene el análisis de datos del conjunto de datos [inserte n
   ```
 ## Contribuciones 🤝
 ¡Las contribuciones son bienvenidas! Por favor, abre un issue o un pull request para contribuir.
-
-## Licencia 📄
-[no tiene XD]
