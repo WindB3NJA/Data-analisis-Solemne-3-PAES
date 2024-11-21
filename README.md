@@ -4,7 +4,7 @@ Este repositorio contiene el análisis de datos del conjunto de Puntajes PAES re
 
 ## Requisitos 🛠️
 
-- Python 3.x
+- Python 3.6+
 - Librerías:
   - streamlit
   - pandas
