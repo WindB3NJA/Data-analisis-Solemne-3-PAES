@@ -1,12 +1,10 @@
-from urllib import request
-import os, pathlib
+import gdown
+import os
+import zipfile
+import shutil
+import pathlib
 
-# URL del archivo.
-url = "https://datosabiertos.mineduc.cl/wp-content/uploads/2024/05/PAES-2024-Inscritos-Puntajes.rar"
-# Descargar el archivo.
-request.urlretrieve(url, "api/Dataframe.rar")
 
-# Ruta del archivo.
-ROOT = pathlib.Path(os.getcwd())
-# Listar los archivos.
-Folder_images = os.listdir(ROOT)
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+print(ROOT)
+
