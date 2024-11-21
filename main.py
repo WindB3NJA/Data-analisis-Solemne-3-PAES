@@ -1,31 +1,119 @@
-import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import streamlit as st
 
-# Ruta al archivo XLS
-url = "https://datos.gob.cl/dataset/84d6e373-10af-41c9-a4d2-e80db6f94e01/resource/e72a5cc2-d0ec-4d8f-b092-637a513f2c5b/download/aeronaves-inscritas-en-el-r.n.a.-al-31.oct.2024-plataforma-del-gobierno.xlsx"
+# Leer el archivo CSV usando el delimitador adecuado
+datos = pd.read_csv('/Users/simonaspee/Downloads/PAES-2024-Inscritos-Puntajes/A_INSCRITOS_PUNTAJES_PAES_2024_PUB_MRUN.csv', delimiter=';', nrows=1000) # Cambiar el directorio
 
-# Leer el archivo XLS y convertirlo en un DataFrame, especificando que el encabezado está en la tercera fila
-database = pd.read_excel(url, header=2)
 
-# Configuración de la página de Streamlit
-st.set_page_config(
-    page_title="Analisis de datos", page_icon=":chart_with_upwards_trend:")
+# Eliminar los valores nulos
+datos.dropna(inplace=True)
 
-# Título y descripción en Streamlit
-st.title(f"Vista de datos")
-st.markdown("### Datos de AERONAVES INSCRITAS EN EL R.N.A ")
-st.write(database)
+# Limitar los datos a 250 filas
+datos = datos.head(101)
 
-# Graficar los datos
+
+
+# Grafico 1: Bar Chart
+
+# Convertir las columnas a valores numéricos
+datos['MATE1_REG_ACTUAL'] = pd.to_numeric(datos['MATE1_REG_ACTUAL'], errors='coerce')
+datos['CLEC_REG_ACTUAL'] = pd.to_numeric(datos['CLEC_REG_ACTUAL'], errors='coerce')
+
+# Eliminar filas con valores NaN
+datos.dropna(subset=['MATE1_REG_ACTUAL', 'CLEC_REG_ACTUAL'], inplace=True)
+
+
+# Crear el gráfico de barras
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.hist(database['TIPO DE AERONAVE'], bins=20, edgecolor='black')
-ax.set_xlabel('Tipo de Aeronave')
-ax.set_ylabel('Frecuencia')
-ax.set_title('Histograma de Tipos de Aeronaves')
 
-st.pyplot(fig)
+# Definir el ancho de las barras
+bar_width = 0.35
 
-# Grafico de torta
+# Definir las posiciones de las barras
+index = np.arange(len(datos))
 
-fig, ax = plt.subplots()
+# Crear las barras
+bar1 = ax.bar(index, datos['MATE1_REG_ACTUAL'], bar_width, label='C.Matematica 1')
+bar2 = ax.bar(index + bar_width, datos['CLEC_REG_ACTUAL'], bar_width, label='C.Lectora')
+
+# Añadir etiquetas y título
+ax.set_xlabel('Índice')
+ax.set_ylabel('Valores')
+ax.set_title('Competencia Matematica 1 vs Competencia Lectora')
+ax.set_xticks(index[::20] + bar_width / 2)
+ax.set_xticklabels(index[::20])
+ax.legend()
+
+
+
+
+
+# Grafico 2: Line Chart
+
+# Convertir las columnas a valores numéricos
+datos['HCSOC_REG_ACTUAL'] = pd.to_numeric(datos['HCSOC_REG_ACTUAL'], errors='coerce')
+datos['CIEN_REG_ACTUAL'] = pd.to_numeric(datos['CIEN_REG_ACTUAL'], errors='coerce')
+
+# Eliminar filas con valores NaN
+datos.dropna(subset=['HCSOC_REG_ACTUAL', 'CIEN_REG_ACTUAL'], inplace=True)
+
+
+# Limitar los datos a un índice máximo de 14 para el gráfico
+x = datos['HCSOC_REG_ACTUAL']
+y = datos['CIEN_REG_ACTUAL']
+
+# plot
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+
+ax2.plot(range(len(x)), x, label='P. Historia y Cs. Sociales')
+ax2.plot(range(len(y)), y, label='P. Ciencias')
+
+ax2.set_xlabel('Índice')
+ax2.set_ylabel('Valores')
+ax2.set_title('Prueba Historia y Cs. Sociales vs Prueba Ciencias')
+ax2.legend()
+
+
+
+# Grafico 3: Scatter Plot
+
+# Crear el gráfico de dispersión
+fig3, ax3 = plt.subplots(figsize=(10, 6))
+
+ax3.scatter(datos['HCSOC_REG_ACTUAL'], datos['CIEN_REG_ACTUAL'], label='Puntajes', alpha=0.5)
+
+# Añadir etiquetas y título
+ax3.set_xlabel('P. Historia y Cs. Sociales')
+ax3.set_ylabel('P. Ciencias')
+ax3.set_title('Relación entre P. Historia y Cs. Sociales y P. Ciencias')
+ax3.legend()
+
+
+
+
+
+
+# Streamlit
+
+st.title("Puntajes PAES 2024")
+
+st.subheader('Tabla de datos')
+st.dataframe(datos.head(10), width=1000, height=400)
+
+st.subheader('Gráficos')
+
+option = st.selectbox(
+    "¿Cuál gráfico estás interesado en ver?",
+    ("Competencia Matematica 1 vs Competencia Lectora (Gráfico de barras)", "Prueba Historia y Cs. Sociales vs Prueba Ciencias (Gráfico de líneas)", "Relación entre P. Historia y Cs. Sociales y P. Ciencias (Gráfico de dispersión)"),
+)
+
+if option == "Competencia Matematica 1 vs Competencia Lectora (Gráfico de barras)":
+    st.pyplot(fig)
+elif option == "Prueba Historia y Cs. Sociales vs Prueba Ciencias (Gráfico de líneas)":
+    st.pyplot(fig2)
+elif option == "Relación entre P. Historia y Cs. Sociales y P. Ciencias (Gráfico de dispersión)":
+    st.pyplot(fig3)
+
+st.write("Seleccionaste:", option)
