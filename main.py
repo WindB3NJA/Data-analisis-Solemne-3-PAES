@@ -3,29 +3,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import pathlib
-import seaborn as sns
 
 # Obtener el directorio raíz del proyecto
 ROOT = pathlib.Path(__file__).resolve().parent
 ROOT_DATASET = ROOT / "database"
 
 # Leer el archivo CSV usando el delimitador adecuado
-datos = pd.read_csv(ROOT_DATASET / "PuntajesPAES2024-D-250.csv") # Cambiar el directorio
-
+datos = pd.read_csv(ROOT_DATASET / "PuntajesPAES2024-D-250.csv")  # Cambiar el directorio
 
 # Limitar los datos a 100 filas
 datos = datos.head(101)
 
-
 # Grafico 1: Bar Chart
-
 # Convertir las columnas a valores numéricos
 datos['MATE1_REG_ACTUAL'] = pd.to_numeric(datos['MATE1_REG_ACTUAL'], errors='coerce')
 datos['CLEC_REG_ACTUAL'] = pd.to_numeric(datos['CLEC_REG_ACTUAL'], errors='coerce')
 
 # Eliminar filas con valores NaN
 datos.dropna(subset=['MATE1_REG_ACTUAL', 'CLEC_REG_ACTUAL'], inplace=True)
-
 
 # Crear el gráfico de barras
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -48,18 +43,13 @@ ax.set_xticks(index[::20] + bar_width / 2)
 ax.set_xticklabels(index[::20])
 ax.legend()
 
-
-
-
 # Grafico 2: Line Chart
-
 # Convertir las columnas a valores numéricos
 datos['HCSOC_REG_ACTUAL'] = pd.to_numeric(datos['HCSOC_REG_ACTUAL'], errors='coerce')
 datos['CIEN_REG_ACTUAL'] = pd.to_numeric(datos['CIEN_REG_ACTUAL'], errors='coerce')
 
 # Eliminar filas con valores NaN
 datos.dropna(subset=['HCSOC_REG_ACTUAL', 'CIEN_REG_ACTUAL'], inplace=True)
-
 
 # Limitar los datos a un índice máximo de 14 para el gráfico
 x = datos['HCSOC_REG_ACTUAL']
@@ -76,10 +66,7 @@ ax2.set_ylabel('Valores')
 ax2.set_title('Prueba Historia y Cs. Sociales vs Prueba Ciencias')
 ax2.legend()
 
-
-
-# Grafico 3: Scatter Plot 
-
+# Grafico 3: Scatter Plot
 # Crear el gráfico de dispersión
 fig3, ax3 = plt.subplots(figsize=(10, 6))
 
@@ -91,9 +78,8 @@ ax3.set_ylabel('Maximo Puntaje de Competencia Lectora')
 ax3.set_title('Relacion entre Punta NEM y Maximo Puntaje de Competencia Lectora')
 ax3.legend()
 
-
-
-# Grafico 4: Boxplot 
+# Grafico 4: Boxplot
+categorias = { 'H1': 'Humanista Científico Diurno', 'H2': 'Humanista Científico Nocturno', 'H3': 'Humanista Científico – Validación de estudios', 'H4': 'Humanista Científico – Reconocimiento de estudios', 'T1': 'Técnico Profesional Comercial', 'T2': 'Técnico Profesional Industrial', 'T3': 'Técnico Profesional Servicios y Técnica', 'T4': 'Técnico Profesional Agrícola', 'T5': 'Técnico Profesional Marítima', ' ':'No hay registro' }
 
 # Seleccionar las columnas a usar y eliminar filas con valores NaN
 columns_to_use = ['RAMA_EDUCACIONAL', 'PTJE_NEM', 'PTJE_RANKING']
@@ -103,34 +89,28 @@ filtered_data = datos[columns_to_use].dropna()
 fig4, ax4 = plt.subplots(figsize=(10, 6))
 
 # Crear el boxplot para comparar puntajes por modalidad educacional
-sns.boxplot(data=filtered_data, x='RAMA_EDUCACIONAL', y='PTJE_NEM', palette="Set3", ax=ax4)
+unique_ramas = filtered_data['RAMA_EDUCACIONAL'].unique()
+data_to_plot = [filtered_data[filtered_data['RAMA_EDUCACIONAL'] == rama]['PTJE_NEM'] for rama in unique_ramas]
+
+box = ax4.boxplot(data_to_plot, labels=unique_ramas, patch_artist=True)
+
+# Asignar un color único a cada caja
+colors = plt.cm.Paired(np.linspace(0, 1, len(unique_ramas)))
+for patch, color in zip(box['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Crear la leyenda
+patches = [plt.Line2D([0], [0], color=color, lw=4) for color in colors]
+legend_labels = [categorias[rama] for rama in unique_ramas]
+ax4.legend(patches, legend_labels, title="Modalidad Educacional", bbox_to_anchor=(1.05, 1), loc='upper left')
 
 # Títulos y etiquetas
 ax4.set_title("Comparación de Puntaje NEM por Modalidad Educacional", fontsize=16)
 ax4.set_xlabel("Modalidad Educacional", fontsize=12)
 ax4.set_ylabel("Puntaje NEM", fontsize=12)
 ax4.set_xticklabels(ax4.get_xticklabels(), rotation=45, fontsize=10)
-ax4.legend()
 
 # Grafico 5: Torta
-
-categorias = {
-    'H1': 'Humanista Científico Diurno',
-    'H2': 'Humanista Científico Nocturno',
-    'H3': 'Humanista Científico – Validación de estudios',
-    'H4': 'Humanista Científico – Reconocimiento de estudios',
-    'T1': 'Técnico Profesional Comercial',
-    'T2': 'Técnico Profesional Industrial',
-    'T3': 'Técnico Profesional Servicios y Técnica',
-    'T4': 'Técnico Profesional Agrícola',
-    'T5': 'Técnico Profesional Marítima',
-    ' ':'No hay registro'
-}
-# Contar la cantidad de estudiantes por rama educacional
-ramas_counts = datos['RAMA_EDUCACIONAL'].value_counts()
-
-ramas_counts = datos['RAMA_EDUCACIONAL'].value_counts()
-
 ramas_counts = datos['RAMA_EDUCACIONAL'].value_counts()
 
 # Crear el gráfico de torta con un tamaño más grande
@@ -147,10 +127,7 @@ ax5.legend(labels=[f'{categorias.get(rama, rama)}: {ramas_counts[rama]} estudian
 # Título
 ax5.set_title('Distribución de Estudiantes por Rama Educacional')
 
-
-
 # Grafico 6: Histograma
-
 # Calcular el puntaje promedio (asumiendo que el puntaje promedio se puede calcular como la media de los puntajes NEM y Ranking)
 datos['Puntaje_Promedio'] = datos[['PTJE_NEM', 'PTJE_RANKING']].mean(axis=1)
 
@@ -172,7 +149,6 @@ ax6.set_title('Distribución de Puntajes Promedio, NEM y Ranking', fontsize=16)
 
 # Añadir la leyenda
 ax6.legend()
-
 
 # Streamlit
 st.title("Datos de PAES 2024 de 100 estudiantes")
