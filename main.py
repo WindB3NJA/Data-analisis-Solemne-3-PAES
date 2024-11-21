@@ -4,7 +4,7 @@ import numpy as np
 import streamlit as st
 
 # Leer el archivo CSV usando el delimitador adecuado
-datos = pd.read_csv('/Users/simonaspee/Downloads/PAES-2024-Inscritos-Puntajes/A_INSCRITOS_PUNTAJES_PAES_2024_PUB_MRUN.csv', delimiter=';', nrows=1000)
+datos = pd.read_csv('/Users/simonaspee/Downloads/PAES-2024-Inscritos-Puntajes/A_INSCRITOS_PUNTAJES_PAES_2024_PUB_MRUN.csv', delimiter=';', nrows=1000) # Cambiar el directorio
 
 
 # Eliminar los valores nulos
