@@ -4,7 +4,6 @@ import numpy as np
 import streamlit as st
 import pathlib
 
-
 # Obtener el directorio raíz del proyecto
 ROOT = pathlib.Path(__file__).resolve().parent
 ROOT_DATASET = ROOT / "database"
@@ -82,29 +81,12 @@ ax3.legend()
 # Grafico 4: Boxplot
 categorias = { 'H1': 'Humanista Científico Diurno', 'H2': 'Humanista Científico Nocturno', 'H3': 'Humanista Científico – Validación de estudios', 'H4': 'Humanista Científico – Reconocimiento de estudios', 'T1': 'Técnico Profesional Comercial', 'T2': 'Técnico Profesional Industrial', 'T3': 'Técnico Profesional Servicios y Técnica', 'T4': 'Técnico Profesional Agrícola', 'T5': 'Técnico Profesional Marítima', ' ':'No hay registro' }
 
-# Filtrar las columnas necesarias y eliminar filas con valores NaN
+# Seleccionar las columnas a usar y eliminar filas con valores NaN
 columns_to_use = ['RAMA_EDUCACIONAL', 'PTJE_NEM', 'PTJE_RANKING']
 filtered_data = datos[columns_to_use].dropna()
 
-# Asegurarse de que las categorías están bien formateadas (eliminando espacios extra)
-filtered_data['RAMA_EDUCACIONAL'] = filtered_data['RAMA_EDUCACIONAL'].str.strip()
-
-# Preparar los datos para el gráfico de caja (boxplot)
-unique_categories = filtered_data['RAMA_EDUCACIONAL'].unique()
-
-# Asegurarse de que cada categoría tiene datos disponibles
-data_nem = [filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]['PTJE_NEM'] for category in unique_categories if len(filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]) > 0]
-
 # Crear el gráfico de caja
-fig4, ax4 = plt.subplots(figsize=(14, 8))  # Aumentar el tamaño del gráfico
-
-# Dibujar el boxplot
-ax4.boxplot(data_nem, patch_artist=True, 
-            boxprops=dict(facecolor='lightblue', color='blue'), 
-            medianprops=dict(color='red'), 
-            whiskerprops=dict(color='blue'), 
-            capprops=dict(color='blue'))
-
+fig4, ax4 = plt.subplots(figsize=(10, 6))
 
 # Crear el boxplot para comparar puntajes por modalidad educacional
 unique_ramas = filtered_data['RAMA_EDUCACIONAL'].unique()
@@ -121,10 +103,12 @@ for patch, color in zip(box['boxes'], colors):
 patches = [plt.Line2D([0], [0], color=color, lw=4) for color in colors]
 legend_labels = [categorias[rama] for rama in unique_ramas]
 ax4.legend(patches, legend_labels, title="Modalidad Educacional", bbox_to_anchor=(1.05, 1), loc='upper left')
-=======
-# Ajustar las etiquetas del eje X
-ax4.set_xticklabels(unique_categories, rotation=45, ha='right', fontsize=10)
 
+# Títulos y etiquetas
+ax4.set_title("Comparación de Puntaje NEM por Modalidad Educacional", fontsize=16)
+ax4.set_xlabel("Modalidad Educacional", fontsize=12)
+ax4.set_ylabel("Puntaje NEM", fontsize=12)
+ax4.set_xticklabels(ax4.get_xticklabels(), rotation=45, fontsize=10)
 
 # Grafico 5: Torta
 ramas_counts = datos['RAMA_EDUCACIONAL'].value_counts()
