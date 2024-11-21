@@ -1,4 +1,4 @@
-import gdown,os,zipfile,shutil, pathlib
+import gdown,os,zipfile,shutil,pathlib
 
 # Obtener el directorio raíz del proyecto
 ROOT = pathlib.Path(__file__).resolve().parent.parent
