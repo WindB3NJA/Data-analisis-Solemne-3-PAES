@@ -99,12 +99,17 @@ ax3.legend()
 columns_to_use = ['RAMA_EDUCACIONAL', 'PTJE_NEM', 'PTJE_RANKING']
 filtered_data = datos[columns_to_use].dropna()
 
+# Asegurarse de que las categorías están bien formateadas (eliminando espacios extra)
+filtered_data['RAMA_EDUCACIONAL'] = filtered_data['RAMA_EDUCACIONAL'].str.strip()
+
 # Preparar los datos para el gráfico de caja (boxplot)
 unique_categories = filtered_data['RAMA_EDUCACIONAL'].unique()
-data_nem = [filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]['PTJE_NEM'] for category in unique_categories]
+
+# Asegurarse de que cada categoría tiene datos disponibles
+data_nem = [filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]['PTJE_NEM'] for category in unique_categories if len(filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]) > 0]
 
 # Crear el gráfico de caja
-fig4, ax4 = plt.subplots(figsize=(10, 6))
+fig4, ax4 = plt.subplots(figsize=(14, 8))  # Aumentar el tamaño del gráfico
 
 # Dibujar el boxplot
 ax4.boxplot(data_nem, patch_artist=True, 
@@ -114,12 +119,13 @@ ax4.boxplot(data_nem, patch_artist=True,
             capprops=dict(color='blue'))
 
 # Ajustar las etiquetas del eje X
-ax4.set_xticklabels(unique_categories, rotation=45, fontsize=10)
+ax4.set_xticklabels(unique_categories, rotation=45, ha='right', fontsize=10)
 
 # Títulos y etiquetas
 ax4.set_title("Comparación de Puntaje NEM por Modalidad Educacional", fontsize=16)
 ax4.set_xlabel("Modalidad Educacional", fontsize=12)
 ax4.set_ylabel("Puntaje NEM", fontsize=12)
+
 
 # Grafico 5: Torta
 
