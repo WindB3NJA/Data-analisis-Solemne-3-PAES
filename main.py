@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import pathlib
-import seaborn as sns
+
 
 # Obtener el directorio raíz del proyecto
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -95,22 +95,31 @@ ax3.legend()
 
 # Grafico 4: Boxplot 
 
-# Seleccionar las columnas a usar y eliminar filas con valores NaN
+# Filtrar las columnas necesarias y eliminar filas con valores NaN
 columns_to_use = ['RAMA_EDUCACIONAL', 'PTJE_NEM', 'PTJE_RANKING']
 filtered_data = datos[columns_to_use].dropna()
+
+# Preparar los datos para el gráfico de caja (boxplot)
+unique_categories = filtered_data['RAMA_EDUCACIONAL'].unique()
+data_nem = [filtered_data[filtered_data['RAMA_EDUCACIONAL'] == category]['PTJE_NEM'] for category in unique_categories]
 
 # Crear el gráfico de caja
 fig4, ax4 = plt.subplots(figsize=(10, 6))
 
-# Crear el boxplot para comparar puntajes por modalidad educacional
-sns.boxplot(data=filtered_data, x='RAMA_EDUCACIONAL', y='PTJE_NEM', palette="Set3", ax=ax4)
+# Dibujar el boxplot
+ax4.boxplot(data_nem, patch_artist=True, 
+            boxprops=dict(facecolor='lightblue', color='blue'), 
+            medianprops=dict(color='red'), 
+            whiskerprops=dict(color='blue'), 
+            capprops=dict(color='blue'))
+
+# Ajustar las etiquetas del eje X
+ax4.set_xticklabels(unique_categories, rotation=45, fontsize=10)
 
 # Títulos y etiquetas
 ax4.set_title("Comparación de Puntaje NEM por Modalidad Educacional", fontsize=16)
 ax4.set_xlabel("Modalidad Educacional", fontsize=12)
 ax4.set_ylabel("Puntaje NEM", fontsize=12)
-ax4.set_xticklabels(ax4.get_xticklabels(), rotation=45, fontsize=10)
-ax4.legend()
 
 # Grafico 5: Torta
 
