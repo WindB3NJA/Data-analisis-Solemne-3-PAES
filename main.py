@@ -36,8 +36,8 @@ bar1 = ax.bar(index, datos['MATE1_REG_ACTUAL'], bar_width, label='C.Matematica 1
 bar2 = ax.bar(index + bar_width, datos['CLEC_REG_ACTUAL'], bar_width, label='C.Lectora')
 
 # Añadir etiquetas y título
-ax.set_xlabel('Índice')
-ax.set_ylabel('Valores')
+ax.set_xlabel('Estudiantes')
+ax.set_ylabel('Puntajes PAES')
 ax.set_title('Competencia Matematica 1 vs Competencia Lectora')
 ax.set_xticks(index[::20] + bar_width / 2)
 ax.set_xticklabels(index[::20])
@@ -61,8 +61,8 @@ fig2, ax2 = plt.subplots(figsize=(10, 6))
 ax2.plot(range(len(x)), x, label='P. Historia y Cs. Sociales')
 ax2.plot(range(len(y)), y, label='P. Ciencias')
 
-ax2.set_xlabel('Índice')
-ax2.set_ylabel('Valores')
+ax2.set_xlabel('Estudiantes')
+ax2.set_ylabel('Puntajes PAES')
 ax2.set_title('Prueba Historia y Cs. Sociales vs Prueba Ciencias')
 ax2.legend()
 
