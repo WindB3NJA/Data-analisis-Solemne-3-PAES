@@ -155,14 +155,14 @@ st.title("Datos de PAES 2024 de 100 estudiantes")
 
 st.subheader('Tabla de datos')
 st.dataframe(datos.head(10), width=1000, height=400)
+with st.sidebar:
+        st.header("Gráficos")
+        option = st.selectbox(
+            "¿Cuál gráfico estás interesado en ver?",
+            ("Selecciona una opción para visualizar el gráfico", "Competencia Matematica 1 vs Competencia Lectora (Gráfico de barras)", "Prueba Historia y Cs. Sociales vs Prueba Ciencias (Gráfico de líneas)", "Relacion entre Punta NEM y Maximo Puntaje de Competencia Lectora (Gráfico de dispersión)", "Comparación de Puntaje NEM por Modalidad Educacional (Gráfico de Caja)", "Distribución de Estudiantes por Rama Educacional (Gráfico de torta)", "Distribución de Puntajes Promedio, NEM y Ranking (Gráfico de histograma)"),
+        )
 
-st.subheader('Gráficos')
-
-option = st.selectbox(
-    "¿Cuál gráfico estás interesado en ver?",
-    ("Selecciona una opción para visualizar el gráfico", "Competencia Matematica 1 vs Competencia Lectora (Gráfico de barras)", "Prueba Historia y Cs. Sociales vs Prueba Ciencias (Gráfico de líneas)", "Relacion entre Punta NEM y Maximo Puntaje de Competencia Lectora (Gráfico de dispersión)", "Comparación de Puntaje NEM por Modalidad Educacional (Gráfico de Caja)", "Distribución de Estudiantes por Rama Educacional (Gráfico de torta)", "Distribución de Puntajes Promedio, NEM y Ranking (Gráfico de histograma)"),
-)
-
+st.subheader('Gráfico seleccionado')
 if option == "Competencia Matematica 1 vs Competencia Lectora (Gráfico de barras)":
     st.pyplot(fig)
 elif option == "Prueba Historia y Cs. Sociales vs Prueba Ciencias (Gráfico de líneas)":

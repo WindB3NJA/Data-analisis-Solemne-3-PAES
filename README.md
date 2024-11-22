@@ -13,7 +13,7 @@ Este repositorio contiene el análisis de datos del conjunto de **Puntajes PAES*
 
 ## Sobre los datos 📂
 
-Los datos originales provienen de una base del gobierno que contiene un volumen considerable de información sobre los puntajes PAES. Dado el tamaño del archivo original, se decidió delimitarlo y modificarlo a **100 filas** para hacer el análisis más manejable y comprensible.
+Los datos originales provienen de una base del gobierno que contiene un volumen considerable de información sobre los puntajes PAES. Dado el tamaño del archivo original, se decidió delimitarlo y modificarlo a **100 filas** para facilitar el uso de memoria, rendimiento, hacer el análisis más manejable y comprensible.
 
 - **Archivo Original:** Puedes acceder al archivo original de los datos PAES 2024 en este [enlace](https://datosabiertos.mineduc.cl/wp-content/uploads/2024/05/PAES-2024-Inscritos-Puntajes.rar).
 - **Archivo en Google Drive:** El archivo procesado se encuentra disponible en [Google Drive](https://drive.google.com/open?id=16_mpkujb2sXBAdEC2BV652lWDr7hjMsQ&authuser=1).
